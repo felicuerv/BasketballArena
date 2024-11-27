@@ -1,0 +1,123 @@
+
+.about-us {
+    font-family: 'Arial', sans-serif;
+    color: white;
+    background: linear-gradient(90deg, #002D62, #C8102E);
+    text-align: center;
+    padding: 20px 15px;
+    overflow: hidden;
+}
+
+.about-banner {
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #002D62 30%, #C8102E 70%);
+    color: #FFD700;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+    border-bottom: 3px solid #C8102E;
+}
+
+
+.about-banner h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+}
+
+.about-banner p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin: 0;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 30px 15px;
+}
+
+.about-mission, .about-vision {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 800px;
+    text-align: left;
+}
+
+.about-mission h2, .about-vision h2 {
+    color: #FFD700;
+    margin-bottom: 10px;
+}
+
+.about-highlight {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.about-highlight h2 {
+    margin-bottom: 15px;
+}
+
+.about-highlight ul {
+    list-style: none;
+    padding: 0;
+}
+
+.about-highlight li {
+    margin: 10px 0;
+    font-size: 1rem;
+}
+
+.about-highlight li strong {
+    color: #FFD700;
+}
+
+.about-cta {
+    margin-top: 30px;
+    padding: 30px;
+    background: #C8102E;
+    border-radius: 10px;
+    color: white;
+}
+
+.about-cta h2 {
+    margin-bottom: 15px;
+}
+
+.about-cta button {
+    padding: 10px 20px;
+    border: none;
+    background: #FFD700;
+    color: #002D62;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.about-cta button:hover {
+    transform: scale(1.05);
+    background: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-banner h1 {
+        font-size: 2rem;
+    }
+
+    .about-banner p {
+        font-size: 1rem;
+    }
+
+    .about-mission, .about-vision {
+        font-size: 0.9rem;
+    }
+
+    .about-highlight {
+        font-size: 0.9rem;
+    }
+}
