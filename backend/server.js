@@ -1,23 +1,64 @@
-require("dotenv").config();
 const express = require("express");
-const exphbs = require("express-handlebars");
+const nodemailer = require("nodemailer");
+const cors = require("cors");
 const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+require("dotenv").config();
 
-const contactRoutes = require("./routes/contactRoutes");
+// Configuración de base de datos y rutas
+const db = require("./models/db"); // Asegúrate de que tienes db.js en la carpeta models
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
-
-// Configurar Handlebars como motor de plantillas
-app.engine("handlebars", exphbs.engine({ defaultLayout: "main" }));
-app.set("view engine", "handlebars");
+const PORT = 5000;
 
 // Middlewares
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
 app.use(bodyParser.json());
 
-// Rutas
-app.use("/contact", contactRoutes);
+// **RUTAS DEL SISTEMA DE LOGIN**
+app.use("/api/auth", authRoutes);
 
-// Iniciar el servidor
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+// **RUTA PARA ENVÍO DE CORREOS**
+app.post("/send-email", async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    // Configuración del transportador de Nodemailer
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER, // Configurado en tu archivo .env
+        pass: process.env.EMAIL_PASS, // Contraseña de App en tu archivo .env
+      },
+    });
+
+    // Configuración del correo electrónico
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Gracias por contactarnos",
+      html: `<p>Hola ${name},</p>
+             <p>Hemos recibido tu mensaje:</p>
+             <blockquote>${message}</blockquote>
+             <p>Nos pondremos en contacto contigo lo antes posible.</p>
+             <p>Saludos,</p>
+             <p>El equipo de Basketball Arena</p>`,
+    };
+
+    // Enviar correo
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "Correo enviado correctamente" });
+  } catch (error) {
+    console.error("Error al enviar el correo:", error);
+    res.status(500).json({ message: "Error al enviar el correo" });
+  }
+});
+
+// **INICIAR EL SERVIDOR**
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
+
+
