@@ -2,29 +2,37 @@ const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-exports.login = (req, res) => {
+exports.login = async (req, res) => {
   const { mail, password } = req.body;
 
-  User.findByEmail(mail, (err, results) => {
-    if (err) return res.status(500).json({ error: 'Database error.' });
-    if (results.length === 0) return res.status(404).json({ error: 'User not found.' });
+  try {
+    const user = await User.findOne({ mail });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
 
-    const user = results[0];
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) return res.status(500).json({ error: 'Encryption error.' });
-      if (!isMatch) return res.status(401).json({ error: 'Invalid credentials.' });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid credentials.' });
+    }
 
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      res.json({ token });
-    });
-  });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.json({ token });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error.' });
+  }
 };
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
   const { mail, password } = req.body;
 
-  User.create({ mail, password }, (err) => {
-    if (err) return res.status(500).json({ error: 'Database error.' });
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10); // Increase salt rounds for security
+    const user = await User.create({ mail, password: hashedPassword });
     res.status(201).json({ message: 'User registered successfully.' });
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error.' });
+  }
 };
