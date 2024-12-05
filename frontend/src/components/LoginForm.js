@@ -1,41 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./../styles/components/pages/loginPage.css";
 
-const LoginForm = () => {
+const LoginForm = ({ setAuthenticated }) => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Para redirigir al inicio
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Input validation (optional):
-    if (!validateEmail(mail)) {
-      setMessage("Dirección de correo electrónico inválida.");
-      return;
-    }
-
     try {
+      // Solicitud al endpoint de login
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         mail,
         password,
       });
 
-      setMessage("¡Inicio de sesión exitoso!");
-      localStorage.setItem("token", response.data.token); // Assuming response.data contains a token
-
-      // Handle successful login (optional):
-      // - Redirect to a different page
-      // - Store user information in state
+      // Si el login es exitoso
+      setMessage("Inicio de sesión exitoso.");
+      localStorage.setItem("token", response.data.token); // Guardar token
+      setAuthenticated(true); // Actualizar estado de autenticación
+      navigate("/"); // Redirigir al inicio
     } catch (err) {
-      setMessage("Error: Credenciales inválidas o error del servidor."); // More specific error handling
+      setMessage("Error: Credenciales inválidas.");
     }
-  };
-
-  const validateEmail = (mail) => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(mail).toLowerCase());
   };
 
   return (
@@ -44,7 +34,7 @@ const LoginForm = () => {
       <form onSubmit={handleSubmit}>
         <input
           type="email"
-          placeholder="Correo electrónico"
+          placeholder="Correo Electrónico"
           value={mail}
           onChange={(e) => setMail(e.target.value)}
           required
@@ -64,3 +54,5 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+

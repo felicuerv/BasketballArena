@@ -61,4 +61,6 @@ app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
+// Asegúrate de tener esta línea en tu archivo de configuración principal.
+console.log(process.env.JWT_SECRET);  // Esto debería mostrar tu clave JWT en la consola.
 

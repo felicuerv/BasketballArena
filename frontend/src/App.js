@@ -1,38 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Header from './components/layout/Header.js';
-import Nav from './components/layout/Nav.js';
-import Footer from './components/layout/Footer.js';
+import Header from "./components/layout/Header";
+import Nav from "./components/layout/Nav";
+import Footer from "./components/layout/Footer";
 
-import ContactoPage from './pages/contactoPage.js';
-import HomePage from './pages/homePage.js';
-import NosotrosPage from './pages/nosotrosPage.js';
-import Novedades from './pages/novedadesPage.js';
-import LoginPage from './pages/loginPage.js'; // Importa el nuevo componente
-
+import HomePage from "./pages/homePage";
+import ContactoPage from "./pages/contactoPage";
+import NosotrosPage from "./pages/nosotrosPage";
+import NovedadesPage from "./pages/novedadesPage";
+import LoginForm from "./components/LoginForm";
+import RegisterForm from "./components/RegisterForm";
+import Perfil from "./components/Perfil";
 
 function App() {
+  const [authenticated, setAuthenticated] = useState(!!localStorage.getItem("token")); // Comprobar si el token existe
+
   return (
-    <div className="App">
+    <BrowserRouter>
       <Header />
-
-      <BrowserRouter>
-        <Nav />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="nosotros" element={<NosotrosPage />} />
-          <Route path="novedades" element={<Novedades />} />
-          <Route path="contacto" element={<ContactoPage />} />
-          <Route path="login" element={<LoginPage />} /> {/* Nueva ruta */}
-        </Routes>
-      </BrowserRouter>
-
+      <Nav authenticated={authenticated} setAuthenticated={setAuthenticated} /> {/* Pasar las props correctamente */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/nosotros" element={<NosotrosPage />} />
+        <Route path="/novedades" element={<NovedadesPage />} />
+        <Route path="/contacto" element={<ContactoPage />} />
+        <Route
+          path="/login"
+          element={<LoginForm setAuthenticated={setAuthenticated} />}
+        />
+        <Route
+          path="/register"
+          element={<RegisterForm setAuthenticated={setAuthenticated} />}
+        />
+        <Route path="perfil" element={<Perfil setAuthenticated={setAuthenticated} />} />
+      </Routes>
       <Footer />
-    </div>
+    </BrowserRouter>
   );
 }
 
-
 export default App;
+
 

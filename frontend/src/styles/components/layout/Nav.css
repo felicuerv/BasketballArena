@@ -1,4 +1,3 @@
-
 .navbar {
     background: linear-gradient(90deg, #002D62, #C8102E);
     color: white;
@@ -8,48 +7,85 @@
     z-index: 1000;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Asegura que el logo y enlaces estén separados */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-container {
+  }
+  
+  .navbar-container {
     width: 100%;
     max-width: 1200px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
-
-.navbar-logo {
+  }
+  
+  .navbar-logo {
     font-size: 1.5em;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 2px;
     color: white;
     margin: 0;
-}
-
-.navbar-links {
+  }
+  
+  .navbar-links {
     list-style: none;
     display: flex;
     gap: 20px;
     margin: 0;
     padding: 0;
-}
-
-.navbar-links li {
+    align-items: center; /* Asegura que los items estén alineados verticalmente */
+  }
+  
+  .navbar-links li {
     margin: 0;
-}
-
-.navbar-links a {
+  }
+  
+  .navbar-links a {
     color: white;
     text-decoration: none;
     font-size: 1.1em;
     text-transform: uppercase;
     transition: color 0.3s ease;
     font-weight: 600;
-}
-
-.navbar-links a:hover {
-    color: #FFD700; 
-}
+  }
+  
+  .navbar-links a:hover {
+    color: #FFD700;
+  }
+  
+  .navbar-avatar-container {
+    display: flex;
+    align-items: center; /* Alinea el avatar con los otros enlaces */
+  }
+  
+  .navbar-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 10px; /* Añadir espacio entre el avatar y el botón de cerrar sesión */
+    transition: transform 0.2s ease;
+  }
+  
+  .navbar-avatar:hover {
+    transform: scale(1.1);
+  }
+  
+  .navbar-logout {
+    background: none;
+    border: 1px solid white;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  .navbar-logout:hover {
+    background: white;
+    color: #002D62;
+  }
+  
+  
